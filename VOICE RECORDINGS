@@ -1,0 +1,40 @@
+# voice_recorder.py
+
+import sounddevice as sd
+import numpy as np
+from scipy.io.wavfile import write
+import time
+
+# List of texts to be recorded
+texts = [
+    "Hello",
+    "Thank You",
+    "You are Welcome",
+    "Yes",
+    "No",
+    "House",
+    "Please",
+    "Goodbye",
+    "Sorry",
+    "Help"
+]
+
+# Sampling frequency
+fs = 44100  # Sample rate
+
+def record_audio(filename, duration):
+    print(f"Recording for {duration} seconds...")
+    recording = sd.rec(int(duration * fs), samplerate=fs, channels=1, dtype='float64')
+    sd.wait()  # Wait until recording is finished
+    write(filename, fs, recording)  # Save as WAV file
+    print(f"Recording saved as {filename}")
+
+def main():
+    for i, text in enumerate(texts):
+        print(text)  # Print the text to be recorded
+        input("Press Enter to start recording...")
+        record_audio(f"recording_{i+1}.wav", 3)  # Record for 3 seconds
+        time.sleep(1)  # Wait a moment before the next recording
+
+if __name__ == "__main__":
+    main()
