@@ -1,0 +1,40 @@
+import os
+from playsound import playsound
+
+# Set the directory for recordings
+recordings_dir = r"C:\Users\Acer\OneDrive\Desktop\sign_language\recordings"
+os.makedirs(recordings_dir, exist_ok=True)
+
+while True:
+    # Get user input
+    text = input("Enter the text to play audio (or type 'exit' to quit): ")
+    
+    if text.lower() == 'exit':
+        print("Exiting the program.")
+        break
+
+    # Create a safe filename by replacing spaces with underscores and removing punctuation
+    safe_filename_with_underscores = text.replace(" ", " ").replace(",", "").replace("?", "").replace("!", "") + ".wav"
+    safe_filename_with_spaces = text + ".wav"  # For files with spaces
+
+    # Construct the full file paths
+    file_path_with_underscores = os.path.join(recordings_dir, safe_filename_with_underscores)
+    file_path_with_spaces = os.path.join(recordings_dir, safe_filename_with_spaces)
+
+    # Check if the audio file exists
+    if os.path.exists(file_path_with_underscores):
+        try:
+            # Play the audio file
+            playsound(file_path_with_underscores)
+            print(f"Playing audio for: '{text}'")
+        except Exception as e:
+            print(f"An error occurred while trying to play the audio: {e}")
+    elif os.path.exists(file_path_with_spaces):
+        try:
+            # Play the audio file
+            playsound(file_path_with_spaces)
+            print(f"Playing audio for: '{text}'")
+        except Exception as e:
+            print(f"An error occurred while trying to play the audio: {e}")
+    else:
+        print(f"No audio file found for: '{text}'. Please ensure the file exists in the specified recordings folder.")
